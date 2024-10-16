@@ -1,9 +1,15 @@
 const CercaVirtual = require('../models/CercaVirtual');
+const Dispositivo = require('../models/Dispositivo');
 
 // Listar todas as cercas virtuais
 exports.listarCercasVirtuais = async (req, res) => {
     try {
-        const cercasVirtuais = await CercaVirtual.findAll();
+        const cercasVirtuais = await CercaVirtual.findAll({
+            include: [{
+                model: Dispositivo, // Incluir o modelo Dispositivo
+                attributes: ['id', 'nome'], // Seleciona apenas os atributos necessários
+            }]
+        });
         res.json(cercasVirtuais);
     } catch (error) {
         res.status(500).json({ error: 'Erro ao listar cercas virtuais' });

@@ -1,7 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import api from '../services/api';
+import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from 'react-leaflet';
 import { Table, Button, Form, Modal } from 'react-bootstrap';
+import 'leaflet/dist/leaflet.css';
+import L from 'leaflet';
 import './CercasVirtuais.css';
+
+// Corrigir ícone padrão do Leaflet
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+    iconRetinaUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon-2x.png',
+    iconUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png',
+    shadowUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png',
+});
 
 const CercasVirtuais = () => {
     const [cercas, setCercas] = useState([]);
@@ -72,6 +83,16 @@ const CercasVirtuais = () => {
         }
     };
 
+    // Componente para permitir clicar e escolher a posição no mapa
+    const LocalizadorDePonto = () => {
+        const map = useMapEvents({
+            click(e) {
+                setCercaAtual((prev) => ({ ...prev, lat: e.latlng.lat, lng: e.latlng.lng }));
+            },
+        });
+        return null;
+    };
+
     return (
         <div className="container">
             <h2>Áreas Monitoradas</h2>
@@ -82,6 +103,7 @@ const CercasVirtuais = () => {
                     <tr>
                         <th>ID</th>
                         <th>Nome</th>
+                        <th>Dispositivo</th>
                         <th>Raio (m)</th>
                         <th>Localização (Lat, Lng)</th>
                         <th>Ações</th>
@@ -92,6 +114,7 @@ const CercasVirtuais = () => {
                         <tr key={cerca.id}>
                             <td>{cerca.id}</td>
                             <td>{cerca.nome}</td>
+                            <td>{cerca.Dispositivo ? cerca.Dispositivo.nome : 'Sem dispositivo'}</td> {/* Exibe o nome do dispositivo */}
                             <td>{cerca.raio}</td>
                             <td>{cerca.lat}, {cerca.lng}</td>
                             <td>
@@ -170,6 +193,27 @@ const CercasVirtuais = () => {
                                 ))}
                             </Form.Control>
                         </Form.Group>
+
+                        {/* Mapa interativo */}
+                        <div style={{ height: '300px', width: '100%' }}>
+                            <MapContainer
+                                center={cercaAtual.lat && cercaAtual.lng ? [cercaAtual.lat, cercaAtual.lng] : [-15.7801, -47.9292]}
+                                zoom={13}
+                                style={{ height: '100%', width: '100%' }}
+                            >
+                                <TileLayer
+                                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                                    attribution="&copy; OpenStreetMap contributors"
+                                />
+                                {cercaAtual.lat && cercaAtual.lng && (
+                                    <Marker position={[cercaAtual.lat, cercaAtual.lng]}>
+                                        <Popup>Localização da Cerca</Popup>
+                                    </Marker>
+                                )}
+                                <LocalizadorDePonto />
+                            </MapContainer>
+                        </div>
+
                     </Form>
                 </Modal.Body>
                 <Modal.Footer>
