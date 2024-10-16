@@ -85,7 +85,7 @@ const CercasVirtuais = () => {
 
     // Componente para permitir clicar e escolher a posição no mapa
     const LocalizadorDePonto = () => {
-        const map = useMapEvents({
+        useMapEvents({
             click(e) {
                 setCercaAtual((prev) => ({ ...prev, lat: e.latlng.lat, lng: e.latlng.lng }));
             },
@@ -114,7 +114,7 @@ const CercasVirtuais = () => {
                         <tr key={cerca.id}>
                             <td>{cerca.id}</td>
                             <td>{cerca.nome}</td>
-                            <td>{cerca.Dispositivo ? cerca.Dispositivo.nome : 'Sem dispositivo'}</td> {/* Exibe o nome do dispositivo */}
+                            <td>{cerca.Dispositivo ? cerca.Dispositivo.nome : 'Sem dispositivo'}</td>
                             <td>{cerca.raio}</td>
                             <td>{cerca.lat}, {cerca.lng}</td>
                             <td>

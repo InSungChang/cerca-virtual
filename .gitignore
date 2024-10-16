@@ -1,6 +1,6 @@
 # Ignorar node_modules em ambas as pastas
 cerca-virtual-frontend/node_modules/
-cerca-virtual-backend/node_modules/
+backend/node_modules/
 
 # Outras pastas ou arquivos que você deseja ignorar
 .DS_Store
