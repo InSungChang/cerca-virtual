@@ -50,3 +50,14 @@ button {
     margin-bottom: 5px; /* Espaço abaixo do rótulo */
     display: block; /* Faz o rótulo ocupar toda a linha */
 }
+
+.marker-label {
+    background: white;
+    padding: 2px 5px;
+    border-radius: 3px;
+    font-size: 12px;
+    font-weight: bold;
+    color: black;
+    position: relative; /* Necessário para posicionamento absoluto */
+    z-index: 10; /* Garantir que o texto fique acima do marcador */
+}

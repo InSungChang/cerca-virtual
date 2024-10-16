@@ -1,7 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import api from '../services/api';
 import { Table, Button, Form, Modal } from 'react-bootstrap';
+import { MapContainer, TileLayer, Marker, Popup, Tooltip } from 'react-leaflet';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
 import './CercasVirtuais.css';
+
+// Para que os marcadores apareçam corretamente
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+    iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
+    iconUrl: require('leaflet/dist/images/marker-icon.png'),
+    shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
+});
 
 const DispositivoList = () => {
     const [dispositivos, setDispositivos] = useState([]);
@@ -99,6 +110,33 @@ const DispositivoList = () => {
                     ))}
                 </tbody>
             </Table>
+
+             {/* Mapa para mostrar a localização atual dos dispositivos */}
+             <MapContainer center={[-22.2350, -51.9253]} zoom={5} style={{ height: "400px", width: "100%" }}>
+                <TileLayer
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                />
+                {dispositivos.map(dispositivo => {
+                    const [lat, lng] = dispositivo.localizacao_atual.split(',').map(coord => parseFloat(coord.trim()));
+                    return (
+                        <Marker key={dispositivo.id} position={[lat, lng]}>
+                            <Popup>
+                                <strong>{dispositivo.nome}</strong><br />
+                                IMEI: {dispositivo.imei}<br />
+                                Status: {dispositivo.status === 'ativo' ? 'Ativo' : 'Inativo'}
+                            </Popup>
+                            {/* Adicione uma camada para mostrar o nome ao lado do marcador */}
+                            {/* <div className="marker-label" style={{ position: 'absolute', transform: 'translate(-50%, -20%)' }}>
+                                {dispositivo.nome}
+                            </div> */}
+                            <Tooltip direction="right" offset={[0, -2]} opacity={1} permanent>
+                                {dispositivo.nome}
+                            </Tooltip>
+                        </Marker>
+                    );
+                })}
+            </MapContainer>             
 
             {/* Modal de criação/edição */}
             <Modal show={showModal} onHide={handleCloseModal}>
