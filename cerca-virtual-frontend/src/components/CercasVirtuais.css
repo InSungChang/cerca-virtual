@@ -37,3 +37,16 @@ button {
 .botao-adicionar {
     margin-bottom: 10px;
 }
+
+.input-margin {
+    margin: 0px 0px 10px 0px;
+
+}
+
+.label-destaque {
+    font-weight: bold; /* Deixar o texto em negrito */
+    color: #000; 
+    font-size: 1.1rem; /* Aumentar o tamanho da fonte */
+    margin-bottom: 5px; /* Espaço abaixo do rótulo */
+    display: block; /* Faz o rótulo ocupar toda a linha */
+}

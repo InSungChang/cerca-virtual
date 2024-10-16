@@ -108,32 +108,35 @@ const DispositivoList = () => {
                 <Modal.Body>
                     <Form>
                         <Form.Group controlId="formNome">
-                            <Form.Label>Nome</Form.Label>
+                            <Form.Label className="label-destaque">Nome</Form.Label>
                             <Form.Control
                                 type="text"
                                 name="nome"
                                 value={dispositivoAtual.nome}
                                 onChange={handleChange}
                                 placeholder="Digite o nome do dispositivo"
+                                className="input-margin"
                             />
                         </Form.Group>
 
                         <Form.Group controlId="formIMEI">
-                            <Form.Label>IMEI</Form.Label>
+                            <Form.Label className="label-destaque">IMEI</Form.Label>
                             <Form.Control
                                 type="text"
                                 name="imei"
                                 value={dispositivoAtual.imei}
                                 onChange={handleChange}
                                 placeholder="Digite o IMEI"
+                                className="input-margin"
                             />
                         </Form.Group>
 
                         <Form.Group controlId="formStatus">
-                            <Form.Label>Status</Form.Label>
+                            <Form.Label className="label-destaque">Status</Form.Label>
                             <Form.Control
                                 as="select" // Altere para um select
                                 name="status"
+                                className="input-margin"
                                 value={dispositivoAtual.status}
                                 onChange={handleChange}
                             >
@@ -143,13 +146,14 @@ const DispositivoList = () => {
                         </Form.Group>
 
                         <Form.Group controlId="formLocalizacaoAtual">
-                            <Form.Label>Localização Atual</Form.Label>
+                            <Form.Label className="label-destaque">Localização Atual</Form.Label>
                             <Form.Control
                                 type="text"
                                 name="localizacao_atual"
                                 value={dispositivoAtual.localizacao_atual}
                                 onChange={handleChange}
                                 placeholder="Digite a localização atual"
+                                className="input-margin"
                             />
                         </Form.Group>
                     </Form>

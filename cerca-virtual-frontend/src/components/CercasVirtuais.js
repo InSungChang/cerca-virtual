@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import api from '../services/api';
-import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, Circle, useMapEvents } from 'react-leaflet';
 import { Table, Button, Form, Modal } from 'react-bootstrap';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
@@ -134,54 +134,47 @@ const CercasVirtuais = () => {
                 <Modal.Body>
                     <Form>
                         <Form.Group controlId="formNome">
-                            <Form.Label>Nome</Form.Label>
+                            <Form.Label className="label-destaque">Nome</Form.Label>
                             <Form.Control
                                 type="text"
                                 name="nome"
                                 value={cercaAtual.nome}
                                 onChange={handleChange}
                                 placeholder="Digite o nome da cerca"
-                            />
-                        </Form.Group>
-
-                        <Form.Group controlId="formRaio">
-                            <Form.Label>Raio (m)</Form.Label>
-                            <Form.Control
-                                type="text"
-                                name="raio"
-                                value={cercaAtual.raio}
-                                onChange={handleChange}
-                                placeholder="Digite o raio da cerca"
+                                className="input-margin"
                             />
                         </Form.Group>
 
                         <Form.Group controlId="formLat">
-                            <Form.Label>Latitude</Form.Label>
+                            <Form.Label className="label-destaque">Latitude</Form.Label>
                             <Form.Control
                                 type="text"
                                 name="lat"
                                 value={cercaAtual.lat}
                                 onChange={handleChange}
                                 placeholder="Digite a latitude"
+                                className="input-margin"
                             />
                         </Form.Group>
 
                         <Form.Group controlId="formLng">
-                            <Form.Label>Longitude</Form.Label>
+                            <Form.Label className="label-destaque">Longitude</Form.Label>
                             <Form.Control
                                 type="text"
                                 name="lng"
                                 value={cercaAtual.lng}
                                 onChange={handleChange}
                                 placeholder="Digite a longitude"
+                                className="input-margin"
                             />
                         </Form.Group>
 
                         <Form.Group controlId="formDispositivo">
-                            <Form.Label>Dispositivo</Form.Label>
+                            <Form.Label className="label-destaque">Dispositivo</Form.Label>
                             <Form.Control
                                 as="select"
                                 name="dispositivoId"
+                                className="input-margin"
                                 value={cercaAtual.dispositivoId}
                                 onChange={handleChange}
                             >
@@ -193,12 +186,24 @@ const CercasVirtuais = () => {
                                 ))}
                             </Form.Control>
                         </Form.Group>
+                        
+                        <Form.Group controlId="formRaio">
+                            <Form.Label className="label-destaque">Raio (m)</Form.Label>
+                            <Form.Control
+                                type="text"
+                                name="raio"
+                                value={cercaAtual.raio}
+                                onChange={handleChange}
+                                placeholder="Digite o raio da cerca"
+                                className="input-margin"
+                            />
+                        </Form.Group>
 
                         {/* Mapa interativo */}
                         <div style={{ height: '300px', width: '100%' }}>
                             <MapContainer
-                                center={cercaAtual.lat && cercaAtual.lng ? [cercaAtual.lat, cercaAtual.lng] : [-15.7801, -47.9292]}
-                                zoom={13}
+                                center={cercaAtual.lat && cercaAtual.lng ? [cercaAtual.lat, cercaAtual.lng] : [-25.425912003292144, -49.260832179446844]}
+                                zoom={11}
                                 style={{ height: '100%', width: '100%' }}
                             >
                                 <TileLayer
@@ -206,9 +211,16 @@ const CercasVirtuais = () => {
                                     attribution="&copy; OpenStreetMap contributors"
                                 />
                                 {cercaAtual.lat && cercaAtual.lng && (
-                                    <Marker position={[cercaAtual.lat, cercaAtual.lng]}>
-                                        <Popup>Localização da Cerca</Popup>
-                                    </Marker>
+                                    <>
+                                        <Marker position={[cercaAtual.lat, cercaAtual.lng]}>
+                                            <Popup>Localização da Cerca</Popup>
+                                        </Marker>
+                                        <Circle
+                                            center={[cercaAtual.lat, cercaAtual.lng]}
+                                            radius={cercaAtual.raio} // Raio em metros
+                                            pathOptions={{ color: 'blue', fillColor: 'blue', fillOpacity: 0.3 }} // Estilo do círculo
+                                        />
+                                    </>
                                 )}
                                 <LocalizadorDePonto />
                             </MapContainer>
